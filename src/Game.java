@@ -1,46 +1,64 @@
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class Game {
-
+public class Game extends JFrame{
 	
 	private int x;
 	private int y;
 	private int resolution;
-	private JFrame frame;
 	private JLabel[][] position;
 	private LocalPlayer ply;
 	
 	public Game(int resolution) {
 		this.resolution = resolution;
+		System.out.println(resolution);
 		ply = new LocalPlayer();
 		initInterface();
 	}
 	
 	public void initInterface() {
 		
-		frame = new JFrame("Game");
-		frame.setLayout(new GridLayout(resolution,resolution));
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.setSize(600, 600);
-		frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		frame.addKeyListener(new KeyListener() {
+		setLayout(new GridLayout(resolution,resolution));
+		setVisible(true);
+		setResizable(true);
+		setSize(600, 600);
+		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		
+		position = new JLabel[resolution][resolution];
+		
+		for(int lig = 0; lig < resolution; lig++) {
+			for(int col = 0; col<resolution; col++) {
+				position[lig][col] = new JLabel();
+				add(position[lig][col]);
+				position[lig][col].setBackground(Color.WHITE);
+				position[lig][col].setOpaque(true);
+			}
+		}
+		repaint();
+		
+		setPlayerPosition(ply.getX(),ply.getY());
+		
+		addKeyListener(new KeyListener() {
 	        @Override
 	        public void keyTyped(KeyEvent e) {
 	        }
 
 	        @Override
 	        public void keyPressed(KeyEvent e) {
-	            if(e.getKeyCode() == KeyEvent.VK_W) setPlayerPosition(0,-1);
-	            if(e.getKeyCode() == KeyEvent.VK_S) setPlayerPosition(0,1);
-	            if(e.getKeyCode() == KeyEvent.VK_A) setPlayerPosition(-1,0);
-	            if(e.getKeyCode() == KeyEvent.VK_D) setPlayerPosition(1,0);
+	            if(e.getKeyCode() == KeyEvent.VK_W) setPlayerPosition(ply.getX(),ply.getY()-1);
+	            if(e.getKeyCode() == KeyEvent.VK_S) setPlayerPosition(ply.getX(),ply.getY()+1);
+	            if(e.getKeyCode() == KeyEvent.VK_A) setPlayerPosition(ply.getX()-1,ply.getY());
+	            if(e.getKeyCode() == KeyEvent.VK_D) setPlayerPosition(ply.getX()+1, ply.getY());
+	            
+	            repaint();
 	        }
 
 	        @Override
@@ -48,26 +66,18 @@ public class Game {
 	        }
 	    });
 		
-		position = new JLabel[resolution][resolution];
-		
-		for(int lig = 0; lig < resolution; lig++) {
-			for(int col = 0; col<resolution; col++) {
-				frame.add(position[lig][col]);
-				position[lig][col].setBackground(Color.WHITE);
-			}
-		}
-		frame.pack();
-		frame.repaint();
-		
 	}
 	
 	public void setPlayerPosition(int x, int y) {
 		
-		position[ply.getY()+y][ply.getX()+x].setBackground(Color.BLACK);
-		position[ply.getY()][ply.getX()].setBackground(Color.WHITE);
-		ply.setX(ply.getX()+x);
-		ply.setY(ply.getY()+y);
+		System.out.println(x+","+y);
 		
+		position[y][x].setBackground(Color.BLACK);
+		position[ply.getY()][ply.getX()].setBackground(Color.WHITE);
+		ply.setX(x);
+		ply.setY(y);
+		validate();
+		repaint();
 	}
 
 	public int getX() {
@@ -94,6 +104,5 @@ public class Game {
 		this.resolution = resolution;
 	}
 	
-	
-	
 }
+

@@ -3,8 +3,8 @@ public class LocalPlayer {
 	private int x, y;
 	
 	public LocalPlayer() {
-		this.x= 50;
-		this.y= 50;
+		this.x= 10;
+		this.y= 10;
 	}
 	public LocalPlayer(int x, int y) {
 		this.x = x;
