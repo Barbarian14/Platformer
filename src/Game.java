@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Timer;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,7 +21,7 @@ public class Game extends JFrame{
 	public Game(int resolution) {
 		this.resolution = resolution;
 		System.out.println(resolution);
-		ply = new LocalPlayer();
+		ply = new LocalPlayer(50,50);
 		initInterface();
 	}
 	
@@ -31,6 +32,11 @@ public class Game extends JFrame{
 		setResizable(true);
 		setSize(600, 600);
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		Timer t = new Timer();
+		Physics physics = new Physics();
+		physics.setLocalPlayer(ply);
+		physics.setGame(this);
+		
 		
 		position = new JLabel[resolution][resolution];
 		
@@ -65,7 +71,7 @@ public class Game extends JFrame{
 	        public void keyReleased(KeyEvent e) {
 	        }
 	    });
-		
+		t.schedule(physics, 0, 1000);
 	}
 	
 	public void setPlayerPosition(int x, int y) {
