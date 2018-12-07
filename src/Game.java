@@ -59,10 +59,22 @@ public class Game extends JFrame{
 
 	        @Override
 	        public void keyPressed(KeyEvent e) {
-	            if(e.getKeyCode() == KeyEvent.VK_W) setPlayerPosition(ply.getX(),ply.getY()-1);
-	            if(e.getKeyCode() == KeyEvent.VK_S) setPlayerPosition(ply.getX(),ply.getY()+1);
-	            if(e.getKeyCode() == KeyEvent.VK_A) setPlayerPosition(ply.getX()-1,ply.getY());
-	            if(e.getKeyCode() == KeyEvent.VK_D) setPlayerPosition(ply.getX()+1, ply.getY());
+	            if(e.getKeyCode() == KeyEvent.VK_W) {
+	            	Physics.haut();
+	            	setPlayerPosition(ply.getX(),ply.getY());
+	            }
+	            if(e.getKeyCode() == KeyEvent.VK_S) {
+	            	Physics.bas();
+	            	setPlayerPosition(ply.getX(),ply.getY());
+	            }
+	            if(e.getKeyCode() == KeyEvent.VK_A) {
+	            	Physics.gauche();
+	            	setPlayerPosition(ply.getX(),ply.getY());
+	            }
+	            if(e.getKeyCode() == KeyEvent.VK_D) {
+	            	Physics.droite();
+	            	setPlayerPosition(ply.getX(),ply.getY());
+	            }
 	            
 	            repaint();
 	        }
@@ -80,7 +92,7 @@ public class Game extends JFrame{
 		
 		position[y][x].setBackground(Color.BLACK);
 		position[ply.getY()][ply.getX()].setBackground(Color.WHITE);
-		ply.setX(x);
+		ply.setX(x+Physics);
 		ply.setY(y);
 		validate();
 		repaint();
