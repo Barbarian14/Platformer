@@ -35,13 +35,17 @@ public class Renderer {
         }
     }
 
+
     public void drawObstacles(ArrayList<Obstacle> obstacles) {
 
         for(int i = 0; i<obstacles.size(); i++) {
             Obstacle obs = obstacles.get(i);
             for(int x = 0; x<obs.getWidth(); x++) {
                 for(int y = 0; y<obs.getHeight(); y++) {
-                    setPixel(x+obs.getX(), y+obs.getY(), obs.getColor());
+                    if(obs.getPixel() == null)
+                        setPixel(x+obs.getX(), y+obs.getY(), obs.getColor());
+                    else
+                        setPixel(x+obs.getX(), y+obs.getY(), obs.getPixel()[x+y*obs.getWidth()]);
                 }
             }
 
