@@ -5,7 +5,6 @@ public class GameContainer implements Runnable{
     private Thread thread;
     private boolean isRunning = false;
     private final double UPDATE_RATE = 1d/60d;
-    private int gravityCounter = 0;
 
     private String gameName = "Platformer";
 
@@ -63,7 +62,6 @@ public class GameContainer implements Runnable{
             lastTime = System.nanoTime() / 1000000000d;
 
             if ((lastTime - firstTime) >= UPDATE_RATE) {
-                gravityCounter++;
                     ply.setGravity(ply.getGravity() + 0.5);
 
                     if (ply.getX() >= 0 && ply.getY() >= 0 && ply.getWidth() <= gameWindow.getCanvas().getWidth() && ply.getHeight() <= gameWindow.getCanvas().getHeight()) {
