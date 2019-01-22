@@ -11,7 +11,7 @@ public class LocalPlayer {
     private GameContainer gc;
     private Hitbox hitbox;
     private int speed = 3;
-    private int gravity;
+    private double gravity;
     boolean jumping=false;
 
     public LocalPlayer(String path, GameContainer gc) {
@@ -43,12 +43,12 @@ public class LocalPlayer {
     }
 
 
-    public int getGravity() {
+    public double getGravity() {
         return gravity;
     }
 
-    public void setGravity(int gravity) {
-        this.gravity = gravity;
+    public void setGravity(double d) {
+        this.gravity = d;
     }
 
     public int getSpeed() {

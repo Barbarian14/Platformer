@@ -27,7 +27,7 @@ public class GameContainer implements Runnable{
     }
 
     public void start(){
-        ply = new LocalPlayer("player.png", this);
+        ply = new LocalPlayer("bonhomme.jfif", this);
         obstacles = new ArrayList<>();
         obstacles.add(new Obstacle("player.png", 300,500));
         obstacles.add(new Obstacle("player.png", 500,600));
@@ -64,14 +64,11 @@ public class GameContainer implements Runnable{
 
             if ((lastTime - firstTime) >= UPDATE_RATE) {
                 gravityCounter++;
-                if (10 == gravityCounter) {
-                    gravityCounter = 0;
-                    ply.setGravity(ply.getGravity() + 1);
-                }
+                    ply.setGravity(ply.getGravity() + 0.5);
 
                     if (ply.getX() >= 0 && ply.getY() >= 0 && ply.getWidth() <= gameWindow.getCanvas().getWidth() && ply.getHeight() <= gameWindow.getCanvas().getHeight()) {
 
-                        ply.setY(ply.getY() + ply.getGravity());
+                        ply.setY(ply.getY() + (int) ply.getGravity());
                         while (true) {
                             if (hasCollision()) {
                                 int i = hasCollisionWith();
@@ -94,51 +91,22 @@ public class GameContainer implements Runnable{
                         }
                         if(ply.getGravity()>0) ply.setJumping(true);
 
-                        if (input.isMovingUp()) {
-
-                            if(!ply.getJumping()) {
-                                ply.setGravity(-5);
-                                ply.setY(ply.getY() - ply.getSpeed());
-                                while (true) {
-                                    if (hasCollision()) {
-                                        ply.setY(ply.getY() + 1);
-                                        continue;
-                                    }
-                                    break;
-                                }
-                                ply.setJumping(true);
-                            }
-                        }
-                        if (input.isMovingLeft()) {
-                            ply.setX(ply.getX() - ply.getSpeed());
-                            while (true) {
-                                if (hasCollision()) {
-                                    ply.setX(ply.getX() + 1);
-                                    continue;
-                                }
-                                break;
-                            }
-                        }
-                        if (input.isMovingRight()) {
-                            ply.setX(ply.getX() + ply.getSpeed());
-                            while (true) {
-                                if (hasCollision()) {
-                                    ply.setX(ply.getX() - 1);
-                                    continue;
-                                }
-                                break;
-                            }
-                        }
+                        if (input.isMovingUp()) 
+                        	moveUp();
+                        if (input.isMovingLeft()) 
+                        	moveLeft();
+                        if (input.isMovingRight()) 
+                        	moveRight();
 
                     } else {
-                        System.out.println("test");
                         ply.setJumping(false);
                     }
+                    
                     renderer.clear();
                     renderer.drawImage(ply);
                     renderer.drawObstacles(obstacles);
-
                     gameWindow.update();
+                    
                     firstTime = System.nanoTime() / 1000000000d;
                 } else {
                     try {
@@ -150,8 +118,44 @@ public class GameContainer implements Runnable{
 
 
         }
+    
+    public void moveRight() {
+    	ply.setX(ply.getX() + ply.getSpeed());
+        while (true) {
+            if (hasCollision()) {
+                ply.setX(ply.getX() - 1);
+                continue;
+            }
+            break;
+        }
+    }
+    
+    public void moveLeft() {
+    	ply.setX(ply.getX() - ply.getSpeed());
+        while (true) {
+            if (hasCollision()) {
+                ply.setX(ply.getX() + 1);
+                continue;
+            }
+            break;
+        }
+    }
 
-
+    public void moveUp() {
+    	if(!ply.getJumping()) {
+            ply.setGravity(-10);
+            ply.setY(ply.getY() - ply.getSpeed());
+            while (true) {
+                if (hasCollision()) {
+                    ply.setY(ply.getY() + 1);
+                    continue;
+                }
+                break;
+            }
+            ply.setJumping(true);
+        }
+    }
+    
     public boolean hasCollision() {
         for (int i = 0; i < obstacles.size(); i++) {
             Obstacle obs = obstacles.get(i);
